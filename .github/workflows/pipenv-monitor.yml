@@ -31,7 +31,7 @@ jobs:
       # Replace
       - name: Replace with PyPi manifests
         run: |
-          find . -name "Pipfile.lock" | while read line ; do (cd ${line%/*} && python3 -m pipenv lock -r > requirements.txt && rm Pipfile) ; done
+          find . -name "Pipfile.lock" | while read line ; do (cd ${line%/*} && python3 -m pipenv lock -r > requirements.txt && rm Pipfile && pip install -r ${line%/*}/requirements.txt) ; done
 
       # Monitor
       - name: Snyk Monitor
