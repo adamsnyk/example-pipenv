@@ -31,8 +31,8 @@ jobs:
       # Replace
       - name: Replace with PyPi manifests
         run: |
-          find . -name "Pipfile.lock" | while read line ; do (cd ${line%/*} && python3 -m pipenv lock -r > requirements.txt && rm Pipfile && pip install -r ${line%/*}/requirements.txt) ; done
+          find . -name "Pipfile.lock" | while read line ; do (cd ${line%/*} && pipenv lock -r > requirements.txt && rm Pipfile && rm Pipfile.lock) ; done
 
       # Monitor
       - name: Snyk Monitor
-        run: snyk monitor --all-projects --remote-repo-url=${{ github.event.repository.name }} --org=goofy-co.
+        run: snyk monitor --all-projects --remote-repo-url=${{ github.event.repository.name }} --org=goofy-co. --skip-unresolved
