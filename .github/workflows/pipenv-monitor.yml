@@ -1,0 +1,33 @@
+name: Snyk Monitor - Pipenv
+on:
+  push:
+    branches: [ master, main ]
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+
+      - name: Install pipenv
+        run: |
+          python -m pip install --upgrade pipenv wheel
+
+      # - name: Generate PyPi manifests
+      #   run: |
+      #     find . -name "Pipfile.lock" | while read line ; do (cd ${line%/*} && python3 -m pipenv lock -r > requirements.txt) ; done
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python-3.7@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
+          args: --all-projects --remote-repo-url=${{ github.event.repository.name }} --org=goofy-co.
+
+
