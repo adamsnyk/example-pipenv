@@ -35,4 +35,4 @@ jobs:
 
       # Monitor
       - name: Snyk Monitor
-        run: snyk monitor --all-projects --remote-repo-url=${{ github.event.repository.name }} --org=goofy-co. --skip-unresolved
+        run: snyk monitor --all-projects --remote-repo-url=${{ github.event.organization.name }}/${{ github.event.repository.name }} --org=goofy-co. --skip-unresolved || true
